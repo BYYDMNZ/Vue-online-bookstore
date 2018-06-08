@@ -15,6 +15,7 @@ Vue.use(VueChart)
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = "http://172.18.172.17:8080"
+
 /* eslint-disable no-new */
 const router = new VueRouter({
   routes,
