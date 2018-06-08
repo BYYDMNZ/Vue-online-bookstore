@@ -31,6 +31,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         name: "Login",
         data(){
@@ -41,22 +42,14 @@
         },
       methods:{
         onSubmit(){
-            // var user = {
-            //   username:this.username,
-            //   password:this.password
-            // }
-            // axios.post('/login',user)
-            //   .then(res=>{
-            //     return res.json()
-            //   })
-            //   .then(data=>{
-            //     if(data.logined===false){
-            //         alert(data.message)
-            //     }else if(data.logined===true){
-            //         this.$store.commit("setCurrent",data)
-            //         this.$router.push({name,'home'})
-            //     }
-            //   })
+            var user = {
+              username:this.username,
+              password:this.password
+            }
+            axios.post("/bookstore/user/login",user)
+              .then(res=>{
+               console.log(res)
+              })
         }
       }
     }

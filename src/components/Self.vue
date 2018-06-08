@@ -16,18 +16,22 @@
       },
         data(){
           return{
-            UserType:0,
             page:4
           }
         },
+      computed:{
+        currentUser(){
+          return this.$store.state.currentUser
+        }
+      },
       created(){
           //获取当前用户信息
-          //this.UserType = this.$store.state.currentUser.type;
-          if(this.UserType==0){
+          var type = this.currentUser.type
+          if(type==0){
             this.page =0;
-          }else if(this.UserType==1){
+          }else if(type==1){
             this.page=1;
-          }else if (this.UserType==2){
+          }else if (type==2){
             this.page=2;
           }else{
             this.page=3

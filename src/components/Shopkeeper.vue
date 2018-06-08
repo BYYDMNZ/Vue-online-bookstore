@@ -92,7 +92,6 @@
         data(){
           return{
             book:{},
-            currentUser:this.$store.state.currentUser,
             booksInAStore:[
               {id:1,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20},
               {id:2,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20},
@@ -103,6 +102,11 @@
               {id:7,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20},
               {id:8,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20}
             ]
+          }
+        },
+        computed:{
+          currentUser(){
+            return this.$store.state.currentUser
           }
         },
         methods: {
@@ -124,7 +128,9 @@
             //this.booksInAStore.push(book)
             //console.log(book)
             axios.post('/upBook', book)
-              .then()
+              .then(()=>{
+                //刷新页面
+              })
               .catch()
           },
           deleteBook(id) {
@@ -133,7 +139,9 @@
               bookStore: this.currentUser.userid
             }
             axios.post('/downBook', data)
-              .then()
+              .then(()=>{
+                //刷新页面
+              })
               .catch()
           },
         },

@@ -57,7 +57,6 @@
           txt:"加入购物车成功",
           //数据
           bookId: this.$route.params.id,
-          currentUser: this.$store.state.currentUser,
           book: {
             id: 2,
             type: "童话小说",
@@ -102,6 +101,7 @@
         //         this.comments=data
         //       })
            document.documentElement.scrollTop = 0;
+          // console.log(this.currentUser)
       },
       methods:{
         addToCart(){
@@ -122,12 +122,18 @@
         buy(){
           if(this.currentUser===null){
             alert("请先登录")
+            this.$router.push({name:'login'})
+          }else {
+            this.$store.commit("setCurrentBook", this.book)//数据同步到store
           }
-          this.$store.commit("setCurrentBook",this.book)//数据同步到store
-          this.$router.push({name:'immediatelybuy'})
         },
         closeAlert(){
           this.alerted = false
+        }
+      },
+      computed:{
+        currentUser(){
+          return this.$store.state.currentUser
         }
       }
     }

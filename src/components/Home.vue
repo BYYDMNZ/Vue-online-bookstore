@@ -27,9 +27,21 @@
     export default {
         name: "Home",
         components:{Books},
+        data(){
+          return {
+            page:1
+          }
+        },
         methods:{
-          prevPage(){},
-          nextPage(){}
+          prevPage(){
+            if(this.page<=1){
+            }else{
+              this.page--
+            }
+          },
+          nextPage(){
+            this.page++
+          }
         },
         created(){
           // axios.get("/books")

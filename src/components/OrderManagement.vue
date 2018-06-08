@@ -29,9 +29,13 @@
     import axios from 'axios'
     export default {
         name: "OrderManagement",
+        computed:{
+          user(){
+            return this.$store.state.currentUser//当前用户
+          }
+        },
         data(){
           return{
-            user:this.$store.state.currentUser,//当前用户
             orders:[
               {orderNumber:"BH-0001",bookTitle:"计算机网络",bookNumber:2,bookPrice:65,client:"叶倩",date:"2018-06-13",isDeal:false},
               {orderNumber:"BH-0002",bookTitle:"计算机网络",bookNumber:2,bookPrice:65,client:"叶倩",date:"2018-06-13",isDeal:false},

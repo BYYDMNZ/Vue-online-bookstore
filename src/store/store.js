@@ -6,12 +6,9 @@ export const store = new Vuex.Store({
   state:{
     bookItems:[],
     currentUser:{
-        userid:1,
-        username:"叶倩",
-        phone:"13416141472",
-        type:0,
-        address:"广东广州华南农业大学华山区宿舍4栋"
-      },
+      id:1,
+      type:1
+    },
     currentBook:null,
     isLogin:false,
   },

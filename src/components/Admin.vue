@@ -15,18 +15,22 @@
         components: {Cart, Manager, OrderManagement},
       data(){
         return{
-          UserType:0,
           page:4
+        }
+      },
+      computed:{
+        currentUser(){
+          return this.$store.state.currentUser
         }
       },
       created(){
         //获取当前用户信息
-        //this.UserType = this.$store.state.currentUser.type;
-        if(this.UserType==0){//普通用户
+        var type = this.currentUser.type
+        if(type==0){//普通用户
           this.page =2;
-        }else if(this.UserType==1){//店主
+        }else if(type==1){//店主
           this.page=0;
-        }else if (this.UserType==2){//管理员
+        }else if (type==2){//管理员
           this.page=1;
         }else{
           this.page=3;//游客
