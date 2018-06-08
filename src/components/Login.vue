@@ -32,7 +32,7 @@
 
 <script>
     import axios from 'axios'
-    import qs from 'qs'
+   // import qs from 'qs'
     export default {
         name: "Login",
         data(){
@@ -47,7 +47,10 @@
               username:this.username,
               password:this.password
             }
-            axios.post("/bookstore/user/login",qs.stringify(user))
+            // console.log(user)
+            // console.log(JSON.stringify(user))
+            // console.log(qs.stringify(user))
+            axios.post("/bookstore/user/login",user)
               .then(res=>{
                console.log(res)
               })
