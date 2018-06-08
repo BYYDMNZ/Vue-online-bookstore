@@ -26,11 +26,11 @@
       created(){
         //获取当前用户信息
         var type = this.currentUser.type
-        if(type==0){//普通用户
+        if(type===0){//普通用户
           this.page =2;
-        }else if(type==1){//店主
+        }else if(type===1){//店主
           this.page=0;
-        }else if (type==2){//管理员
+        }else if (type===2){//管理员
           this.page=1;
         }else{
           this.page=3;//游客

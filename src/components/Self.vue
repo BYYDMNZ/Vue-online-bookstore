@@ -27,11 +27,11 @@
       created(){
           //获取当前用户信息
           var type = this.currentUser.type
-          if(type==0){
+          if(type===0){
             this.page =0;
-          }else if(type==1){
+          }else if(type===1){
             this.page=1;
-          }else if (type==2){
+          }else if (type===2){
             this.page=2;
           }else{
             this.page=3

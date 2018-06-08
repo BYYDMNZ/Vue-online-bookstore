@@ -125,6 +125,7 @@
             this.$router.push({name:'login'})
           }else {
             this.$store.commit("setCurrentBook", this.book)//数据同步到store
+            this.$router.push({name:'immediatelybuy'})
           }
         },
         closeAlert(){

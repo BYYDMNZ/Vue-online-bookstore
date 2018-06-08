@@ -5,12 +5,9 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state:{
     bookItems:[],
-    currentUser:{
-      id:1,
-      type:1
-    },
+    currentUser:JSON.parse(window.sessionStorage.getItem('user')),
+    token:window.sessionStorage.getItem('token'),
     currentBook:null,
-    isLogin:false,
   },
   getters:{
     //获取属性的状态
@@ -20,9 +17,20 @@ export const store = new Vuex.Store({
     setBookItems(state,data){
       state.bookItems = data
     },
-    setCurrent(state,data){
-      state.currentUser = data
-      state.isLogin = true
+    setCurrentUser(state,data){
+        state.currentUser = data
+        window.sessionStorage.setItem('user',JSON.stringify(data))
+        console.log(JSON.parse(window.sessionStorage.getItem('user')))
+    },
+    setToken(state,data){
+      state.token = data
+      window.sessionStorage.setItem('token',data)
+    },
+    logout(state){
+      state.token = null
+      state.currentUser = null
+      window.sessionStorage.removeItem('token')
+      window.sessionStorage.removeItem('user')
     },
     setCurrentBook(state,data){
       if(data!=null)
