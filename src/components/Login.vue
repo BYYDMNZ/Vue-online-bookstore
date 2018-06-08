@@ -47,18 +47,10 @@
               username:this.username,
               password:this.password
             }
-          //  console.log(qs.stringify(user))
-            // axios.post("http://localhost:8080/bookstore/user/login?username="+user.username+"&password="+user.password)
-            //   .then((res)=>{
-            //     console.log(res)
-            //   })
-          axios.post("/bookstore/user/login",qs.stringify(user))
-            .then(res=>{
-              return res.data
-            })
-            .then(data=>{
-              console.log(data.obj)
-            })
+            axios.post("/bookstore/user/login",qs.stringify(user))
+              .then(res=>{
+               console.log(res)
+              })
         }
       }
     }
