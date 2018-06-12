@@ -20,15 +20,17 @@
       <div class="ad">
         <img src="../assets/ad.jpg">
       </div>
+      <app-footer></app-footer>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import Footer from './Footer'
     import Books from './Books'
     export default {
       name: "Home",
-      components: {Books},
+      components: {Books,appFooter:Footer},
       data() {
         return {
           page: 1,
@@ -115,6 +117,9 @@
 </script>
 
 <style scoped>
+  .home{
+
+  }
 .bookLogo{
   margin:5px 0px;
   width:100%;

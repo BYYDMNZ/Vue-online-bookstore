@@ -13,6 +13,7 @@ export default {
   name: 'App',
   components:{
     appHeader:Header,//驼峰式命名不需要引号
+
   }
 }
 </script>
