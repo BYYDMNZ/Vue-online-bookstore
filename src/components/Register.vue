@@ -76,8 +76,11 @@
         //
         //    })
         // }
-      }
+      },
     },
+    created(){
+      this.$store.commit("logout")
+    }
   }
 </script>
 

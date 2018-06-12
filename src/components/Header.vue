@@ -12,8 +12,10 @@
         <li><router-link class="nav-link" :to="{name:'statistic'}">统计</router-link></li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <li><router-link class="nav-link" :to="{name:'login'}">登录</router-link></li>
-        <li><router-link class="nav-link" :to="{name:'register'}">注册</router-link></li>
+        <li><router-link class="nav-link" :to="{name:'login'}" v-if="currentUser===null">登录</router-link></li>
+        <li><router-link class="nav-link" :to="{name:'register'}" v-if="currentUser===null">注册</router-link></li>
+        <li class="nav-link" v-if="currentUser!==null">{{currentUser.username}}</li>
+        <li class="nav-link"  v-if="currentUser!==null" @click="logout">[退出]</li>
       </ul>
     </nav>
   </header>
@@ -28,12 +30,22 @@
 
       }
     },
+    computed:{
+      currentUser(){
+        return this.$store.state.currentUser
+      }
+    },
     methods:{
+      logout(){
+        this.$store.commit("logout")
+      }
     },
 
   }
 </script>
 
 <style scoped>
-
+li{
+  cursor: pointer;
+}
 </style>

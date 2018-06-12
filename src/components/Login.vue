@@ -50,11 +50,27 @@
             // console.log(user)
             // console.log(JSON.stringify(user))
             // console.log(qs.stringify(user))
-            axios.post("/bookstore/user/login",user)
-              .then(res=>{
-               console.log(res)
-              })
+            // axios.post("/bookstore/user/login",user)
+            //   .then(res=>{
+            //    console.log(res)
+            //     return res.data
+            //   })
+            //   .then(data=>{
+            //     this.$store.commit("setCurrentUser",data)
+            //   })
+            var data = {
+              userid:2,
+              username:"不一样的美男子",
+              phone:"12347285826",
+              type:0,
+              address:"华南农业大学"
+            }
+          this.$store.commit("setCurrentUser",data)
+          this.$store.commit("setToken",true)
         }
+      },
+      created(){
+        this.$store.commit("logout",)
       }
     }
 </script>

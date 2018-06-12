@@ -7,7 +7,7 @@
             <div>
               <p class="bookTitle" >{{book.name}}</p>
               <span class="money">￥{{book.price}}</span>
-              <p class="brief">{{book.brief}}</p>
+              <p class="brief">{{book.brief.slice(0,10)}}...</p>
             </div>
           </router-link>
         </li>
@@ -20,9 +20,9 @@
     export default {
         name: "Books",
         computed:{
-          getBookItems(){//获取书本信息
+         // books(){//获取书本信息
            // return this.$store.state.bookItems
-          }
+          //}
         },
         data(){
           return{
