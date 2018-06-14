@@ -59,7 +59,7 @@
             //     this.$store.commit("setCurrentUser",data)
             //   })
             var data = {
-              userid:2,
+              userid:1,
               username:"不一样的美男子",
               phone:"12347285826",
               type:0,

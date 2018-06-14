@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <OrderManagement v-if="page==0"></OrderManagement>
-    <Manager v-if="page==1"></Manager>
-    <Cart v-if="page==2"></Cart>
+    <OrderManagement v-if="page===0"></OrderManagement>
+    <Manager v-if="page===1"></Manager>
+    <Cart v-if="page===2"></Cart>
   </div>
 </template>
 
