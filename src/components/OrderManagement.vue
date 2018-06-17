@@ -7,15 +7,12 @@
             <div class="order">
               <p class="orderNumber">{{order.orderNumber}}</p>
               <p>
-                <span class="bookTitle">{{order.bookTitle}}</span>
-                <span class="bookNumber">{{order.bookNumber}}</span><span style="font-size: 12px">本</span>
-                <span class="bookPrice">{{order.bookPrice}}</span><span style="font-size: 12px">RMB/本</span>
-                <span class="totalPrice">￥{{order.bookNumber*order.bookPrice}}</span>
-              </p>
-              <p>
-                <span class="client">{{order.client}}</span>
+                <span class="client">购买者: {{order.client}}</span>
                 <span class="date">{{order.date}}</span>
                 <span class="isDeal">{{order.isDeal===false?'未处理':'已处理'}}</span>
+              </p>
+              <p>
+                <span class="bookMessage" v-for="book in order.books"> {{book.title}}-{{book.num}}本 </span>
               </p>
               <button type="btn" class="btn btn-sm btn-outline-success" @click="dealOrder(order.orderNumber)">处理订单</button>
             </div>
@@ -37,11 +34,11 @@
         data(){
           return{
             orders:[
-              {orderNumber:"BH-0001",bookTitle:"计算机网络",bookNumber:2,bookPrice:65,client:"叶倩",date:"2018-06-13",isDeal:false},
-              {orderNumber:"BH-0002",bookTitle:"计算机网络",bookNumber:2,bookPrice:65,client:"叶倩",date:"2018-06-13",isDeal:false},
-              {orderNumber:"BH-0003",bookTitle:"计算机网络",bookNumber:2,bookPrice:65,client:"叶倩",date:"2018-06-13",isDeal:false},
-              {orderNumber:"BH-0004",bookTitle:"计算机网络",bookNumber:2,bookPrice:65,client:"叶倩",date:"2018-06-13",isDeal:false},
-              {orderNumber:"BH-0005",bookTitle:"计算机网络",bookNumber:2,bookPrice:65,client:"叶倩",date:"2018-06-13",isDeal:false},
+              {orderNumber:"BH-0001",client:"叶倩",date:"2018-06-13",isDeal:false,books:[{title:"书本1",num:2},{title:"书本2",num:1}]},
+              {orderNumber:"BH-0001",client:"保营",date:"2018-06-12",isDeal:false,books:[{title:"书本2",num:2},{title:"书本2",num:1}]},
+              {orderNumber:"BH-0001",client:"多多",date:"2018-06-12",isDeal:false,books:[{title:"书本3",num:2},{title:"书本2",num:1},{title:"书本7",num:5}]},
+              {orderNumber:"BH-0001",client:"颖苗",date:"2018-06-11",isDeal:false,books:[{title:"书本4",num:2},{title:"书本2",num:1}]},
+              {orderNumber:"BH-0001",client:"美男子",date:"2018-06-01",isDeal:false,books:[{title:"书本1",num:2}]},
             ]
           }
         },
@@ -128,5 +125,10 @@
   p{
     padding: 0;
     margin: 4px 5px 2px;
+  }
+  .bookMessage{
+    font-size: 14px;
+    margin-left: 20px;
+    color:crimson;
   }
 </style>

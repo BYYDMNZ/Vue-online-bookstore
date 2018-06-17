@@ -8,7 +8,7 @@
             <strong class="d-block text-gray-dark" style="font-size: 18px">{{user.username}}</strong>
             类型：{{user.type | change}}
           </p>
-          <button class="btn btn-sm" :class="{red:user.status,green:!user.status}" @click="changeStatus(user.userid,user.status)">{{user.status | guanli}}</button>
+          <button class="btn btn-sm" :class="{red:user.status,green:!user.status}" @click="changeStatus(user.userid)">{{user.status | guanli}}</button>
         </div>
 
         <small class="d-block text-right mt-3">
@@ -52,13 +52,9 @@
           }
         },
         methods:{
-          changeStatus(id,status){
-              var data = {
-                userid:id,
-                status:status
-              }
-              console.log(data);
-              // axios.post('/changeStatus',data)
+          changeStatus(id){
+              console.log(id);
+              // axios.get('/changeStatus/?userid='+id)
               //   .then(()=>{
               //     for(let i = 0;i<this.users.length;i++){
               //       if(this.users[i].userid === id)
