@@ -44,6 +44,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: "Register",
     data() {
@@ -58,24 +59,26 @@
     },
     methods: {
       onSubmit() {
-        //     var user = {
-        //       username:this.username,
-        //       phone:this.phone,
-        //       address:this.address,
-        //       password:this.password,
-        //       type:this.type
-        //     }
-        //     axios.post('/register',user)
-        //       .then(res=>{
-        //         console.log(res.json())
-        //       if(res.json().registered===true){
-        //           this.$router.push({name:'login'})
-        //        }else{
-        //            alert(data.message);
-        //        }
-        //
-        //    })
-        // }
+            var user = {
+              username:this.username,
+              phone:this.phone,
+              address:this.address,
+              password:this.password,
+              repassword:this.repassword,
+              type:this.type
+            }
+            axios.post('/user/register',user)
+              .then(res=>{
+                console.log(res.data)
+                var success = res.data.success
+               // console.log(success)
+                if(success===true){
+                    this.$router.push({name:'login'})
+                 }else{
+                     alert(res.data.obj);
+                }
+
+           })
       },
     },
     created(){

@@ -34,7 +34,8 @@
       data() {
         return {
           page: 1,
-          searchString: null
+          searchString: null,
+          totalPages:""
         }
       },
       methods: {
@@ -43,75 +44,77 @@
           } else {
             this.page--
             if(this.searchString === null) {
-              //   axios.get("/bookstore/book/books?page="+this.page)
-              //     .then(res=>{
-              //       return res.data
-              //     })
-              //     .then(data=>{
-              //       this.$store.commit("setBookItems",data.book)
-              //     })
-              // }
+                axios.get("/book/books?page="+this.page)
+                  .then(res=>{
+                    return res.data
+                  })
+                  .then(data=>{
+                    this.$store.commit("setBookItems",data.obj.list)
+                  })
               console.log("上一页无查询")
             }else{
-              //   axios.get("/searchBook/?search="+this.searchString+"&page="+this.page)
-              //     .then(res=>{
-              //       return res.data
-              //     })
-              //     .then(data=>{
-              //       this.$store.commit("setBookItems",data.book)
-              //     })
-              // }
+                axios.get("/searchBook?search="+this.searchString+"&page="+this.page)
+                  .then(res=>{
+                    return res.data
+                  })
+                  .then(data=>{
+                    this.$store.commit("setBookItems",data.obj.list)
+                  })
+              }
               console.log("上一页有查询")
             }
-          }
-        },
+          },
         nextPage() {
-          this.page++
-          if(this.searchString === null) {
-            //   axios.get("/bookstore/book/books?page="+this.page)
-            //     .then(res=>{
-            //       return res.data
-            //     })
-            //     .then(data=>{
-            //       this.$store.commit("setBookItems",data.book)
-            //     })
-            // }
-            console.log("下一页无查询")
-          }else{
-            //   axios.get("/searchBook/?search="+this.searchString+"&page="+this.page)
-            //     .then(res=>{
-            //       return res.data
-            //     })
-            //     .then(data=>{
-            //       this.$store.commit("setBookItems",data.book)
-            //     })
-            // }
+          if(this.page<this.totalPages) {
+            this.page++
+            if (this.searchString === null) {
+              axios.get("/book/books?page="+this.page)
+                .then(res=>{
+                  return res.data
+                })
+                .then(data=>{
+                  this.$store.commit("setBookItems",data.obj.list)
+                })
+              console.log("下一页无查询")
+            } else {
+            axios.get("/searchBook?search="+this.searchString+"&page="+this.page)
+                .then(res=>{
+                  return res.data
+                })
+                .then(data=>{
+                  this.$store.commit("setBookItems",data.obj.list)
+                })
             console.log("下一页有查询")
+            }
+          }else{
+            alert("已经到最后一页了")
           }
         },
         search() {
           console.log(this.searchString)
-          //   axios.get("/searchBook/?search="+this.searchString.trim()+"&page="+this.page)
-          //     .then(res=>{
-          //       return res.data
-          //     })
-          //     .then(data=>{
-          //       this.$store.commit("setBookItems",data.book)
-          //     })
-          // }
+          axios.get("/searchBook?search="+this.searchString+"&page="+this.page)
+            .then(res=>{
+              return res.data
+            })
+            .then(data=>{
+              this.$store.commit("setBookItems",data.obj.list)
+            })
           console.log("第"+this.page+"页查询")
         },
-        created() {
-          // axios.get("/books")
-          //   .then(res=>{
-          //     console.log(res.json());
-          //     return res.json()
-          //   })
-          //   .then(data=>{
-          //     this.$store.commit("setBookItems",data.book)
-          //   })
+      },
+      created() {
+        axios.get("/book/books?page="+this.page)
+          .then(res=>{
+            console.log(res.data);
+            return res.data
+          })
+        .then(data=>{
+          //console.log(data.obj.list)
+          this.totalPages = data.obj.totalPages
+          this.$store.commit("setBookItems",data.obj.list)
+         // console.log(this.$store.state.bookItems)
+        })
 
-        }
       }
     }
 </script>

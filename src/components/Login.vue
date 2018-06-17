@@ -50,27 +50,43 @@
             // console.log(user)
             // console.log(JSON.stringify(user))
             // console.log(qs.stringify(user))
-            // axios.post("/bookstore/user/login",user)
-            //   .then(res=>{
-            //    console.log(res)
-            //     return res.data
-            //   })
-            //   .then(data=>{
-            //     this.$store.commit("setCurrentUser",data)
-            //   })
-            var data = {
-              userid:1,
-              username:"不一样的美男子",
-              phone:"12347285826",
-              type:0,
-              address:"华南农业大学"
-            }
-          this.$store.commit("setCurrentUser",data)
-          this.$store.commit("setToken",true)
-        }
+            axios.post("/user/login",user)
+              .then(res=>{
+                return res.data
+              })
+              .then(data=>{
+                if(data.success === true) {
+                  this.$store.commit("setCurrentUser", data.obj)
+                  this.$store.commit("setToken", true)
+                  //console.log(this.$store.state.currentUser)
+                  this.$router.push({name: 'home'})
+                }else{
+                  alert(data.obj)
+                }
+              })
+              .catch(err=>{
+                console.log(err)
+              })
+              // .then(data=>{
+              //   console.log(data)
+              //   // var user = {
+              //   //
+              //   // }
+              //   // this.$store.commit("setCurrentUser",user)
+              // })
+            // var data = {
+            //   userid:1,
+            //   username:"不一样的美男子",
+            //   phone:"12347285826",
+            //   type:0,
+            //   address:"华南农业大学"
+            // }
+          //this.$store.commit("setCurrentUser",data)
+          //this.$store.commit("setToken",true)
+    }
       },
       created(){
-        this.$store.commit("logout",)
+        this.$store.commit("logout")
       }
     }
 </script>
