@@ -111,16 +111,18 @@
           if(this.currentUser===null){
             alert("请先登录")
             this.$router.push({name:'login'})
+          }else {
+            var data = {
+              userid: this.currentUser.userid,
+              bookid: this.bookId,
+            }
+            //console.log(data);
+            axios.post('/addtocart', data)
+              .then((res)=>{
+                this.alerted = true
+              })
+              .catch()
           }
-          //   var data={
-          //     userid:this.currentUser.userid,
-          //     bookid:this.bookId,
-          //   }
-          //   //console.log(data);
-          // axios.post('/addtocart',data)
-          //   .then()
-          //   .catch()
-          this.alerted = true
         },
         buy(){
           if(this.currentUser===null){

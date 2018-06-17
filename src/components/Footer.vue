@@ -8,7 +8,7 @@
     export default {
         name: "Footer"
     }
-</script> 
+</script>
 
 <style scoped>
 footer{
