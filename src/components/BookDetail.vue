@@ -117,7 +117,7 @@
               bookid: this.bookId,
             }
             //console.log(data);
-            axios.post('/addtocart', data)
+            axios.post('/cart/addtocart', data)
               .then((res)=>{
                 this.alerted = true
               })

@@ -9,12 +9,13 @@
         <span style="color:crimson;font-size:12px">注：离开页面前先保存防止数据丢失哦</span>
         <ul>
           <li v-for="book in baskets">
-            <img :src="book.imgUrl">
+            <img :src="book.imageurl" class="imgClass">
             <div class="message">
-              <p style="font-size: 16px;font-weight: bold;">{{book.title}}<span style="font-size: 14px;color:#222;margin-left: 5px">{{book.author}}</span></p>
-              <p style="font-size: 15px;color:purple;margin-top: 5px">{{book.bookStore}}</p>
+              <p style="font-size: 16px;font-weight: bold;">{{book.title}}</p>
+              <p><span style="font-size: 14px;color:#222;margin-left: 5px">{{book.author}}</span></p>
+              <p style="font-size: 15px;color:purple;margin-top: 5px">店铺：{{book.bookStore}}</p>
               <p style="margin-top: 20px">
-                <a href="#" style="color: darkred;font-size: 12px;text-decoration:underline" @click.prevent="deleteBook(book.id)">删除</a>
+                <a href="#" style="color: darkred;font-size: 12px;text-decoration:underline" @click.prevent="deleteBook(book.bookid)">删除</a>
                 <span>|</span>
                 <a href="#" style="color: grey;font-size: 12px" >移入收藏夹</a>
               </p>
@@ -23,9 +24,9 @@
               ￥{{book.price}}
             </div>
             <div class="number">
-              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="subNumber(book.id)">-</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="subNumber(book.bookid)">-</button>
               {{book.number}}
-              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="addNumber(book.id)">+</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="addNumber(book.bookid)">+</button>
             </div>
           </li>
         </ul>
@@ -59,12 +60,13 @@
           makeSure:false,
           components: {Alert},
           user:{},//当前登录用户
-          baskets:[//购物车
-            {id:1,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"你一定找不到",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
-            {id:2,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"书本2",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
-            {id:3,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"书本3",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
-            {id:4,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"书本4",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
-          ],
+          // baskets:[//购物车
+          //   {id:1,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"你一定找不到",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
+          //   {id:2,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"书本2",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
+          //   {id:3,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"书本3",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
+          //   {id:4,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"书本4",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
+          // ],
+          baskets:[],
         }
       },
       computed:{
@@ -79,7 +81,7 @@
       methods:{
         subNumber(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id === this.baskets[i].id){
+            if(id === this.baskets[i].bookid){
               if(this.baskets[i].number>1) {
                 this.baskets[i].number--;
               }
@@ -89,7 +91,7 @@
         },
         addNumber(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id === this.baskets[i].id){
+            if(id === this.baskets[i].bookid){
               this.baskets[i].number++;
             }
           }
@@ -97,7 +99,7 @@
         },
         deleteBook(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id===this.baskets[i].id){
+            if(id===this.baskets[i].bookid){
               this.baskets.splice(i,1);
             }
           }
@@ -125,7 +127,7 @@
           //生成购物车订单
            var books = []
            for(let i=0;i<this.baskets.length;i++){
-              var book = this.baskets[i].id
+              var book = this.baskets[i].bookid
               var num = this.baskets[i].number
               books.push({bookid:book,number:num});
            }
@@ -156,13 +158,14 @@
         this.user = this.$store.state.currentUser
         //console.log(this.user)
         //获取购物车信息
-        // axios.get('/cart/?userid='+this.user.userid)
-        //   .then(res=>{
-        //     return res.json()
-        //   })
-        //   .then(data=>{
-        //     this.baskets = data
-        //   })
+        axios.get('/cart/cart?userId='+this.user.userid)
+          .then(res=>{
+            console.log(res.data)
+            return res.data
+          })
+          .then(data=>{
+            this.baskets = data.obj
+          })
         this.makeSure = false
       },
 
@@ -178,15 +181,22 @@
   }
   .cart ul li{
     width: 100%;
-    height: 110px;
     border:1px solid #eee;
     border-radius: 8px;
     margin: 10px;
     padding: 5px;
-    overflow: hidden;
+  }
+  .cart ul li::after{
+    content:"";
+    display: block;
+    clear: both;
   }
   .cart ul li img{
     float: left;
+    display: inline-block;
+    margin-right: 20px;
+    width: 100px;
+    height: 150px;
   }
   .cart ul li .message{
     float: left;

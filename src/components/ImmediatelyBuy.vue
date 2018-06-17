@@ -8,9 +8,8 @@
           <div class="card" style="width: 18rem;">
             <img class="card-img-top" :src="book.imgUrl" alt="Card image cap">
             <div class="card-body">
-              <h5 class="card-title " style="font-weight: bold">{{book.name}}</h5>
+              <h5 class="card-title " style="font-weight: bold">{{book.title}}</h5>
               <div class="card-text">
-                <p><span>书名: </span> {{book.title}}</p>
                 <p><span>店铺: </span> {{book.bookStore}}</p>
                 <p><span>单价: </span> ￥{{book.price}}</p>
                 <p><span>数量: </span>
@@ -39,6 +38,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import Alert from "./Alert";
     export default {
         name: "ImmediatelyBuy",
@@ -78,20 +78,19 @@
               userid:this.currentUser.userid,
               bookid:this.book.id,
               number:this.number,
-              bookStore:this.book.bookStore,
+              bookstore:this.book.bookStore,
               date:new Date().getTime(),
             }
             console.log(order);
-            // axios.post('/confirmOrder',order)
-            //   .then((res)=>{
-            //     console.log(res)
-            //
-            //   })
-            //   .catch((err)=>{
-            //     console.log(err)
-            //   })
-            document.documentElement.scrollTop = 0
-            this.alerted = true
+            axios.post('/orderForm/confirmOrder',order)
+              .then((res)=>{
+                console.log(res)
+                document.documentElement.scrollTop = 0
+                this.alerted = true
+              })
+              .catch((err)=>{
+                console.log(err)
+              })
           },
         closeTheBox(){
           this.makeSure = false
