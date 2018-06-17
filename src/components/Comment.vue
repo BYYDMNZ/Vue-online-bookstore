@@ -29,6 +29,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import Alert from "./Alert";
     export default {
         name: "Comment",
@@ -39,12 +40,12 @@
             alerted:false,
             txt:"评论成功",
             //数据
+            commentid:0,
             bookId:this.$route.params.id,
             currentUser:this.$store.state.currentUser,
             start:5,
             brief:null,
             book:{
-              id: 2,
               imgUrl: "https://images-cn.ssl-images-amazon.com/images/I/51z40QXC7SL._SX258_BO1,204,203,200_.jpg",
               title: "肚子里有个火车站",
               author: "安娜.鲁斯曼",
@@ -55,6 +56,7 @@
       methods:{
         onSubmit(){
           var data = {
+            commentid: 0,//新增的评论的id默认为0
             userid:this.currentUser.userid,
             bookid:this.bookId,
             date:new Date().getTime(),
@@ -70,6 +72,20 @@
         closeAlert(){
           this.alerted = false
         }
+      },
+      created(){
+          axios.get('/commet/insert/?userid='+this.currentUser.userid+'&bookid='+this.bookId)
+            .then((res)=>{
+              let obj = res.obj
+              this.commentid = obj.commentid
+              this.start = obj.start
+              this.comment = obj.comment
+              this.book.imgUrl=obj.imgUrl
+              this.book.title = obj.title
+              this.book.author = obj.author
+              this.book.date = obj.date
+            })
+         // console.log(this.currentUser.userid+" "+this.bookId)
       }
     }
 </script>

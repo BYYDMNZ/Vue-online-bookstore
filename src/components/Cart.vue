@@ -122,6 +122,25 @@
         },
         pay(){
           document.documentElement.scrollTop = 0
+          //生成购物车订单
+           var books = []
+           for(let i=0;i<this.baskets.length;i++){
+              var book = this.baskets[i].id
+              var num = this.baskets[i].number
+              books.push({bookid:book,number:num});
+           }
+           var order = {
+              userid:this.$store.state.currentUser.userid,
+              books:books,
+              date:new Date().getTime()
+           }
+           console.log(order)
+          // axios.post('/buyAll',order)
+          //   .then(()=>{
+          //     //清空购物车
+          //     this.baskets = null;
+          //   })
+          this.baskets = [];
           this.alerted = true
         },
         closeTheBox(){

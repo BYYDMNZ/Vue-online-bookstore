@@ -73,16 +73,20 @@
     flex-grow: 1;
     flex-basis:200px;
     padding: 2px;
-    margin: 10px 10px;
+    margin: 10px 0px;
     cursor: pointer;
-    border: 1px solid #eee;
+
   }
   li:hover{
-    border: 1px solid darkgreen;
+    background-color: #eee;
+  }
+  li:hover .bookImg{
+    transform: scale(1.2);
   }
   .bookImg{
     width: 150px;
     height: 150px;
+    transition:transform 0.8s;
   }
   .books .bookTitle{
     font-weight: bold;

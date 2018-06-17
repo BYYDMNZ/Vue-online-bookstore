@@ -14,7 +14,7 @@ Vue.use(VueRouter)
 Vue.use(VueChart)
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = "http://172.18.172.17:8080"
+axios.defaults.baseURL = "http://localhost:8080/bookstore"
 
 /* eslint-disable no-new */
 const router = new VueRouter({
