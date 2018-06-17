@@ -16,6 +16,7 @@
       data(){
         return{
           page:4
+          
         }
       },
       computed:{
