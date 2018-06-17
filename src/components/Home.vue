@@ -53,11 +53,13 @@
                   })
               console.log("上一页无查询")
             }else{
-                axios.get("/searchBook?search="+this.searchString+"&page="+this.page)
+                axios.get("/book/searchBook?search="+this.searchString+"&page="+this.page)
                   .then(res=>{
+
                     return res.data
                   })
                   .then(data=>{
+                    this.totalPages = data.obj.totalPages
                     this.$store.commit("setBookItems",data.obj.list)
                   })
               }
@@ -77,11 +79,12 @@
                 })
               console.log("下一页无查询")
             } else {
-            axios.get("/searchBook?search="+this.searchString+"&page="+this.page)
+            axios.get("/book/searchBook?search="+this.searchString+"&page="+this.page)
                 .then(res=>{
                   return res.data
                 })
                 .then(data=>{
+                  this.totalPages = data.obj.totalPages
                   this.$store.commit("setBookItems",data.obj.list)
                 })
             console.log("下一页有查询")
@@ -92,8 +95,10 @@
         },
         search() {
           console.log(this.searchString)
-          axios.get("/searchBook?search="+this.searchString+"&page="+this.page)
+
+          axios.get("/book/searchBook?search="+this.searchString+"&page="+this.page)
             .then(res=>{
+              console.log(res.data)
               return res.data
             })
             .then(data=>{

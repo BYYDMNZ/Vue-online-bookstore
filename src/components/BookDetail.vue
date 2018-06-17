@@ -4,8 +4,8 @@
         <router-view></router-view>
         <div class="container">
           <div class="row mt-5">
-            <div class="col-md-4">
-              <img :src="book.imgUrl"/>
+            <div class="col-md-4 box">
+              <img :src="book.imgUrl" class="imgClass"/>
             </div>
             <div class="col-md-8 book">
               <div class="name">{{book.title}}<span class="publisher">{{book.publisher}} {{book.publishDate}}</span></div>
@@ -57,51 +57,54 @@
           txt:"加入购物车成功",
           //数据
           bookId: this.$route.params.id,
-          book: {
-            id: 2,
-            type: "童话小说",
-            imgUrl: "https://images-cn.ssl-images-amazon.com/images/I/51z40QXC7SL._SX258_BO1,204,203,200_.jpg",
-            title: "肚子里有个火车站",
-            author: "安娜.鲁斯曼",
-            price: 69.30,
-            bookStore: "叶倩的店",
-            fromAddress: "广东广州天河区",
-            publisher: "中国邮电出版社",
-            publishDate: "2015-01-21",
-            salesVolume: 20000,
-            stock: 3000,
-            intro: "《肚子里有个火车站》茱莉娅吃得太多、太快，所以她的肚子里出事了!饭菜一大块一大块地掉进肚子火车站里，堆得像小山一样高。这可害惨了肚子里的小精灵们，他们冒着被砸晕的危险拼命干活，想把这些食物统统装上火车，送到弯弯曲曲的隧道里去。可是没想到，还有更大的暴风雪在等着他们。他们游行示威、罢工抗议……肚子火车站里一片混乱。小精灵们能渡过这个难关吗？这本独具创意的图画书会带领读者参观肚子火车站，以一种极其有趣的方式使我们了解自己的消化系统，从而帮助我们养成健康的饮食习惯。"
-          },
-          comments:[
-            {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
-            {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
-            {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
-            {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
-            {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
-          ],
+          book:{},
+          comments:[]
+          // book: {
+          //   id: 2,
+          //   type: "童话小说",
+          //   imgUrl: "https://images-cn.ssl-images-amazon.com/images/I/51z40QXC7SL._SX258_BO1,204,203,200_.jpg",
+          //   title: "肚子里有个火车站",
+          //   author: "安娜.鲁斯曼",
+          //   price: 69.30,
+          //   bookStore: "叶倩的店",
+          //   fromAddress: "广东广州天河区",
+          //   publisher: "中国邮电出版社",
+          //   publishDate: "2015-01-21",
+          //   salesVolume: 20000,
+          //   stock: 3000,
+          //   intro: "《肚子里有个火车站》茱莉娅吃得太多、太快，所以她的肚子里出事了!饭菜一大块一大块地掉进肚子火车站里，堆得像小山一样高。这可害惨了肚子里的小精灵们，他们冒着被砸晕的危险拼命干活，想把这些食物统统装上火车，送到弯弯曲曲的隧道里去。可是没想到，还有更大的暴风雪在等着他们。他们游行示威、罢工抗议……肚子火车站里一片混乱。小精灵们能渡过这个难关吗？这本独具创意的图画书会带领读者参观肚子火车站，以一种极其有趣的方式使我们了解自己的消化系统，从而帮助我们养成健康的饮食习惯。"
+          // },
+          // comments:[
+          //   {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
+          //   {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
+          //   {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
+          //   {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
+          //   {username:"叶倩",start:5,intro:"宝宝很喜欢，不错哦",date:"2018-06-05"},
+          // ],
         }
       },
       created() {
-        //    axios.get("/books/?bookid="+this.bookId)
-        //      .then((res)=>{
-        //        console.log(res)
-        //        return res.json()
-        //      })
-        //      .then(data=>{
-        //         this.book = data
-        //      })
-        //      .catch(err=>{
-        //        console.log(err)
-        //      })
-        //     axios.get("/comments/?bookid="+this.bookId)
-        //       .then((res)=>{
-        //         return res.json()
-        //       })
-        //       .then(data=>{
-        //         this.comments=data
-        //       })
+           axios.get("/book/one?bookId="+this.bookId)
+             .then((res)=>{
+              // console.log(res.data)
+               return res.data
+             })
+             .then(data=>{
+                this.book = data.obj
+             })
+             .catch(err=>{
+               console.log(err)
+             })
+            axios.get("/commet/comments?bookid="+this.bookId)
+              .then((res)=>{
+                console.log(res.data)
+                return res.data
+              })
+              .then(data=>{
+                this.comments=data.obj
+              })
            document.documentElement.scrollTop = 0;
-          // console.log(this.currentUser)
+           // console.log(this.currentUser)
       },
       methods:{
         addToCart(){
@@ -150,6 +153,11 @@
     color:darkblue;
     margin-top: 5px;
     cursor: pointer;
+  }
+ .box .imgClass{
+  width: 250px;
+   height: 300px;
+
   }
 .book .publisher{
   font-size: 14px;
