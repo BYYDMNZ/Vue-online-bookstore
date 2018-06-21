@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-      <consumer v-if="page==0"></consumer>
-      <shopkeeper v-if="page==1"></shopkeeper>
+      <consumer v-if="page===0"></consumer>
+      <shopkeeper v-if="page===1"></shopkeeper>
     </div>
 </template>
 
@@ -27,6 +27,7 @@
       created(){
           //获取当前用户信息
           var type = this.currentUser.type
+          console.log(type)
           if(type===0){
             this.page =0;
           }else if(type===1){

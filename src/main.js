@@ -8,8 +8,6 @@ import axios from 'axios'
 import {store} from './store/store'
 import VueChart from 'vue-chart-js'
 
-//axios.defaults.baseURL='';
-
 Vue.use(VueRouter)
 Vue.use(VueChart)
 Vue.config.productionTip = false

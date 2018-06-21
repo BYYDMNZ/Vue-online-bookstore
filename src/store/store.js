@@ -14,6 +14,10 @@ export const store = new Vuex.Store({
   },
   mutations:{
     //改变属性的状态
+    changeUserMessage(state,data){
+      state.currentUser.phone = data.phone
+      state.currentUser.address = data.address
+    },
     setBookItems(state,data){
       state.bookItems = data
     },

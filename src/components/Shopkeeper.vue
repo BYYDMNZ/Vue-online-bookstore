@@ -49,7 +49,7 @@
             <div class="form-group row">
               <label class="col-sm-3">库存量</label>
               <div class="col-sm-9">
-                <input  class="form-control" v-model="book.salesVolume" placeholder="2000"/>
+                <input  class="form-control" v-model="book.stock" placeholder="2000"/>
               </div>
             </div>
             <div class="form-group row">
@@ -72,9 +72,9 @@
               <div class="book">
                 <p style="font-weight: bold">{{book.title}}</p>
                 <p style="font-size: 12px;color: darkred">￥{{book.price}}</p>
-                <p class="bt" v-show="book.status===false">已下架</p>
-                <button type="button" class="btn btn-danger btn-sm down" @click="changeStatus(book.id,book.status)" v-show="book.status===true">×</button>
-                <button type="button" class="btn btn-success btn-sm up" @click="changeStatus(book.id,book.status)" v-show="book.status===false">√</button>
+                <p class="bt" v-show="book.status==0">已下架</p>
+                <button type="button" class="btn btn-danger btn-sm down" @click="changeStatus(book.id)" v-show="book.status==1">×</button>
+                <button type="button" class="btn btn-success btn-sm up" @click="changeStatus(book.id)" v-show="book.status==0">√</button>
               </div>
           </li>
         </ul>
@@ -90,16 +90,16 @@
         data(){
           return{
             book:{},
-            bookId:null,
+            bookId:0,
             booksInAStore:[
-              {id:1,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
-              {id:2,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:false},
-              {id:3,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
-              {id:4,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:false},
-              {id:5,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
-              {id:6,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:false},
-              {id:7,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
-              {id:8,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true}
+              // {id:1,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
+              // {id:2,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:false},
+              // {id:3,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
+              // {id:4,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:false},
+              // {id:5,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
+              // {id:6,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:false},
+              // {id:7,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true},
+              // {id:8,imgUrl:"https://images-cn.ssl-images-amazon.com/images/I/51B0jgsoEEL._SX258_BO1,204,203,200_.jpg",title:"恶意",price:20,status:true}
             ]
           }
         },
@@ -123,50 +123,60 @@
               stock: this.book.stock,
               intro: this.book.intro,
               bookStoreId: this.currentUser.userid,
-              status:true
+              status:1
             }
             //this.booksInAStore.push(book)
             console.log(book)
-            // axios.post('/upBook', book)
-            //   .then(()=>{
-            //     //刷新页面
-            //   })
-            //   .catch()
+            axios.post('/book/upBook', book)
+              .then(()=>{
+                //刷新页面
+                alert("操作成功")
+              })
+              .catch()
           },
-          changeStatus(id,status) {
-            var data = {
-              bookid: id,
-              bookStore: this.currentUser.userid,
-              bookStatus:status
-            }
-            for(let i = 0;i<this.booksInAStore.length;i++){
-              if(this.booksInAStore[i].id===id){
-                this.booksInAStore[i].status = !this.booksInAStore[i].status
-              }
-            }
-           // console.log(data)
-            // axios.post('/changeBookStatus', data)
-            //   .then(()=>{
-            //     //刷新页面
-            //   })
-            //   .catch()
+          changeStatus(id) {
+
+            axios.get('/book/changeBookStatus?bookid='+id)
+              .then(()=>{
+                //刷新页面
+                for(let i = 0;i<this.booksInAStore.length;i++){
+                  if(this.booksInAStore[i].id===id){
+                    //this.booksInAStore[i].status = !this.booksInAStore[i].status
+                    var k = this.booksInAStore[i].status
+                    if(k==0)
+                      this.booksInAStore[i].status = 1
+                    else
+                      this.booksInAStore[i].status = 0
+                  }
+                }
+              })
+              .catch(err=>{
+                alert("操作失败")
+              })
           },
           getBookInfo(id){
              this.bookId = id
-             axios.get('/abooksinstore/?userid='+this.currentUser.userid+"&bookid="+id)
+             axios.get('/book/oneOfBookstore?bookid='+id)
                 .then(res=>{
+                  //console.log(res.data)
                   return res.data
                 })
                .then(data=>{
-                 this.book = data
+                 this.book = data.obj
                })
           }
         },
       created(){
-          // axios.get('/booksinstore/?'+this.currentUser.userid)
-          //   .then(res=>{return res.json()})
-          //   .then(date=>{this.booksInAStore=data})
-        this.bookId = null
+          //获取店铺的所有图书信息
+          axios.get('/book/allOfBookstore?userid='+this.currentUser.userid)
+            .then(res=>{
+             // console.log(res.data)
+              return res.data
+            })
+            .then(data=>{
+              this.booksInAStore = data.obj
+            })
+        this.bookId = 0
       }
     }
 </script>

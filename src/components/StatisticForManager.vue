@@ -2,10 +2,10 @@
   <div class="manager">
     <div class="row mt-5">
       <div class="col-md-6 ">
-        <vue-chart type="bar" :data="chartData1"></vue-chart>
+        <vue-chart type="bar" :data="chartData1" v-if="show"></vue-chart>
       </div>
       <div class="col-md-6">
-        <vue-chart type="line" :data="chartData2"></vue-chart>
+        <vue-chart type="line" :data="chartData2" v-if="show"></vue-chart>
       </div>
     </div>
 
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import VueChart from 'vue-chart-js'
     export default {
       name: "StatisticForManager",
@@ -22,15 +23,13 @@
       computed:{
         userid(){
           return this.$store.state.currentUser.userid
-        }
-      },
-      data() {
-        return {
-          chartData1: {
-            labels: ["叶倩的店", "保营的店", "思慧的店", "颖苗的店", "习大大的店", "华农书店"],
+        },
+        chartData1(){
+          return {
+            labels: [],
             datasets: [{
-              label: '精英店铺排行榜 (营业额)',
-              data: [12000,11000,10000,8653,7898,7398],
+              label: '精英店铺排行榜 (单位 元)',
+              data: [],
               backgroundColor: [
                 'rgba(255, 99, 132, 0.6)',
                 'rgba(54, 162, 235, 0.6)',
@@ -49,23 +48,48 @@
               ],
               borderWidth: 1
             }]
-          },
-          chartData2: {
+          }
+        },
+        chartData2(){
+          return{
             labels: ["第一季度", "第二季度", "第三季度", "第四季度"],
-            datasets: [{
+              datasets: [{
               label: '网站季度营业额 (单位 元)',
-              data: [19372,12000,18653,19372],
+              data: [],
               backgroundColor: 'rgba(255, 206, 86, 0.6)',
               borderColor:'rgba(0, 0, 0, 0.2)',
               borderWidth: 1
             }]
-          },
+          }
+        },
+      },
+      data() {
+        return {
+          show: false,
         }
       },
       created(){
-        console.log(this.userid);
-        // axios.get('/statisticForManager/?userid='+this.userid)
-        //   .then()
+        axios.get('/user/statisticForManager')
+          .then(res=>{
+            console.log(res.data)
+            return res.data
+          })
+          .then(data=>{
+              var list = data.obj.stores
+             // console.log(list)
+              var storesName =[],money=[]
+              list.forEach(item=>{
+                storesName.push(item.username)
+                money.push(item.money)
+              })
+              this.chartData1.labels = storesName
+              this.chartData1.datasets[0].data = money
+              // console.log(this.chartData1.labels)
+              // console.log(this.chartData1.datasets.data)
+              this.chartData2.datasets[0].data = data.obj.seasonMoney
+              this.show = true
+
+          })
       }
     }
 </script>

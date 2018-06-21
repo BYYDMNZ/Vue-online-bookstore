@@ -19,30 +19,38 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         name: "Manager",
         data(){
           return{
             users:[
-              {userid:1,username:"不一样的美男子",type:0,status:true},
-              {userid:2,username:"刘人语出道吧",type:1,status:true},
-              {userid:3,username:"朴志训好靓仔",type:1,status:false},
-              {userid:4,username:"多多",type:0,status:true},
-              {userid:5,username:"北部湾的落日",type:0,status:false},
-              {userid:6,username:"BYYDMNZ",type:0,status:true}
+              // {userid:1,username:"不一样的美男子",type:0,status:true},
+              // {userid:2,username:"刘人语出道吧",type:1,status:true},
+              // {userid:3,username:"朴志训好靓仔",type:1,status:false},
+              // {userid:4,username:"多多",type:0,status:true},
+              // {userid:5,username:"北部湾的落日",type:0,status:false},
+              // {userid:6,username:"BYYDMNZ",type:0,status:true}
             ],
           }
         },
         created(){
             // axios.get('/allUsers')
-            //   .then()
+            //   .then(res=>{
+            //     return res.data
+            //   })
+            //   .then(data=>{
+            //     this.users = data.users;
+            //   })
         },
         filters:{
           change(value){
-            if(value===0)
+            if(value === 0)
               return "顾客"
-            else
+            else if(value === 1)
               return "店主"
+            else
+              return "管理员"
           },
           guanli(value){
             if(value)
@@ -54,14 +62,23 @@
         methods:{
           changeStatus(id){
               console.log(id);
-              // axios.get('/changeStatus/?userid='+id)
-              //   .then(()=>{
-              //     for(let i = 0;i<this.users.length;i++){
-              //       if(this.users[i].userid === id)
-              //         this.users[i].status = !this.users[i].status
-              //     }
-              //   })
+              axios.get('/user/changeStatus?userid='+id)
+                .then(()=>{
+                  for(let i = 0;i<this.users.length;i++){
+                    if(this.users[i].userid === id)
+                      this.users[i].status = !this.users[i].status
+                  }
+                })
           }
+        },
+        created(){
+          axios.get('/user/allUsers')
+            .then((res)=>{
+              return res.data
+            })
+            .then(data=>{
+              this.users = data.obj
+            })
         }
     }
 </script>

@@ -45,18 +45,19 @@
             currentUser:this.$store.state.currentUser,
             start:5,
             brief:null,
-            book:{
-              imgUrl: "https://images-cn.ssl-images-amazon.com/images/I/51z40QXC7SL._SX258_BO1,204,203,200_.jpg",
-              title: "肚子里有个火车站",
-              author: "安娜.鲁斯曼",
-              date:"2018-06-05"
-            }
+            // book:{
+            //   imgUrl: "https://images-cn.ssl-images-amazon.com/images/I/51z40QXC7SL._SX258_BO1,204,203,200_.jpg",
+            //   title: "肚子里有个火车站",
+            //   author: "安娜.鲁斯曼",
+            //   date:"2018-06-05"
+            // }
+            book:{}
           }
         },
       methods:{
         onSubmit(){
           var data = {
-            commentid: 0,//新增的评论的id默认为0
+            commentid: this.commentid,//新增的评论的id默认为0
             userid:this.currentUser.userid,
             bookid:this.bookId,
             date:new Date().getTime(),
@@ -64,7 +65,7 @@
             comment:this.brief
           }
           console.log(data)
-          // axios.post('/comment',data)
+          // axios.post('/commet/update',data)
           //   .then()
           //   .catch()
           this.alerted = true
@@ -74,18 +75,12 @@
         }
       },
       created(){
-          axios.get('/commet/insert/?userid='+this.currentUser.userid+'&bookid='+this.bookId)
+          axios.get('/comet/insert?userid='+this.currentUser.userid+'&bookid='+this.bookId)
             .then((res)=>{
-              let obj = res.obj
-              this.commentid = obj.commentid
-              this.start = obj.start
-              this.comment = obj.comment
-              this.book.imgUrl=obj.imgUrl
-              this.book.title = obj.title
-              this.book.author = obj.author
-              this.book.date = obj.date
+              console.log(res.data)
             })
-         // console.log(this.currentUser.userid+" "+this.bookId)
+        // console.log(this.currentUser.userid+" "+this.bookId)
+
       }
     }
 </script>

@@ -33,13 +33,14 @@
         },
         data(){
           return{
-            orders:[
-              {orderNumber:"BH-0001",client:"叶倩",date:"2018-06-13",isDeal:false,books:[{title:"书本1",num:2},{title:"书本2",num:1}]},
-              {orderNumber:"BH-0001",client:"保营",date:"2018-06-12",isDeal:false,books:[{title:"书本2",num:2},{title:"书本2",num:1}]},
-              {orderNumber:"BH-0001",client:"多多",date:"2018-06-12",isDeal:false,books:[{title:"书本3",num:2},{title:"书本2",num:1},{title:"书本7",num:5}]},
-              {orderNumber:"BH-0001",client:"颖苗",date:"2018-06-11",isDeal:false,books:[{title:"书本4",num:2},{title:"书本2",num:1}]},
-              {orderNumber:"BH-0001",client:"美男子",date:"2018-06-01",isDeal:false,books:[{title:"书本1",num:2}]},
-            ]
+            // orders:[
+            //   {orderNumber:"BH-0001",client:"叶倩",date:"2018-06-13",isDeal:false,books:[{title:"书本1",num:2},{title:"书本2",num:1}]},
+            //   {orderNumber:"BH-0001",client:"保营",date:"2018-06-12",isDeal:false,books:[{title:"书本2",num:2},{title:"书本2",num:1}]},
+            //   {orderNumber:"BH-0001",client:"多多",date:"2018-06-12",isDeal:false,books:[{title:"书本3",num:2},{title:"书本2",num:1},{title:"书本7",num:5}]},
+            //   {orderNumber:"BH-0001",client:"颖苗",date:"2018-06-11",isDeal:false,books:[{title:"书本4",num:2},{title:"书本2",num:1}]},
+            //   {orderNumber:"BH-0001",client:"美男子",date:"2018-06-01",isDeal:false,books:[{title:"书本1",num:2}]},
+            // ]
+            orders:[]
           }
         },
       methods:{
@@ -57,13 +58,14 @@
       },
       created(){
         //获取该店铺的顾客订单信息
-        // axios.get('/orders/?userid='+this.user.userid)
-        //   .then(res=>{
-        //     return res.json()
-        //   })
-        //   .then(data=>{
-        //     this.orders = data
-        //   })
+        axios.get('/orderForm/orders?userid='+this.user.userid)
+          .then(res=>{
+            console.log(res.data)
+            return res.data
+          })
+          .then(data=>{
+            this.orders = data.obj
+          })
       }
     }
 </script>

@@ -54,24 +54,32 @@
         name: "Consumer",
         data(){
           return{
-            orders:[ //已购商品订单
-              {id:1,title:"你不知道的js",price:98,number:1,bookStore:"新华书店"},
-              {id:2,title:"css代码段",price:55,number:1,bookStore:"新华书店"},
-              {id:3,title:"Vue2.0实战",price:87,number:1,bookStore:"新华书店"},
-              {id:4,title:"js高级程序设计",price:98,number:1,bookStore:"新华书店"},
-              {id:5,title:"图解http",price:66,number:1,bookStore:"新华书店"}
-              ],
-            user:this.$store.state.currentUser,//当前登录用户
+            // orders:[ //已购商品订单
+            //   {id:1,title:"你不知道的js",price:98,number:1,bookStore:"新华书店"},
+            //   {id:2,title:"css代码段",price:55,number:1,bookStore:"新华书店"},
+            //   {id:3,title:"Vue2.0实战",price:87,number:1,bookStore:"新华书店"},
+            //   {id:4,title:"js高级程序设计",price:98,number:1,bookStore:"新华书店"},
+            //   {id:5,title:"图解http",price:66,number:1,bookStore:"新华书店"}
+            //   ],
+            orders:[],
             submitted:null,
           }
         },
       methods:{
           put(){
               //修改用户的个人信息
-              axios.get('/change/?userid='+this.user.userid+'&phone='+this.user.phone+'&address='+this.user.address)
+              var data = {
+                 phone : this.user.phone,
+                 address : this.user.address
+              }
+              axios.get('/user/change?userid='+this.user.userid+'&phone='+this.user.phone+'&address='+this.user.address)
                 .then(res=> {
-                  if(res.json().changed===true)
-                      this.submitted=true;
+                  if(res.data.success===true) {
+                    this.submitted = true;
+                    //同步到vuex
+                    this.$store.commit("changeUserMessage",data)
+                    console.log(data)
+                  }
                   else
                     alert("信息修改失败")
                 })
@@ -79,19 +87,24 @@
                   alert("信息修改失败")
                 })
 
-          },
-
+          }
+      },
+      computed:{
+        user(){
+          return this.$store.state.currentUser//当前登录用户
+        }
       },
       created(){
           this.submitted = false;
           //获取已购商品订单信息
-          // axios.get('/bought/?userid='+this.user.userid)
-          //   .then(res=>{
-          //     return res.json()
-          //   })
-          //   .then(data=>{
-          //     this.orders = data
-          //   })
+          axios.get('/orderForm/bought/?userid='+this.user.userid)
+            .then(res=>{
+              console.log(res)
+              return res.data
+            })
+            .then(data=>{
+              this.orders = data.orders
+            })
       }
     }
 </script>

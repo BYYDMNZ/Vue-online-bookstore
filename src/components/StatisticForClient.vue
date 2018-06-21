@@ -2,9 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12 col-md-6">
-      <h3>你的购物情况</h3>
-        <vue-chart type="radar" :data="chartData" class="radar"></vue-chart>
+        <h3>你的购物情况</h3>
+        <vue-chart type="radar" :data="chartData" v-if="show"></vue-chart>
       </div>
+
     <div class="col-sm-12 col-md-6">
       <h3>猜你喜欢</h3>
       <books></books>
@@ -14,56 +15,55 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import Books from './Books'
     export default {
-        name: "StatisticForClient",
+      name: "StatisticForClient",
       components:{Books},
       data() {
         return {
-          chartData: {
-            labels: ["经典名著", "计算机与互联网", "娱乐休闲", "科普读物", "生活图书", "外语学习"],
+          show:false
+        }
+      },
+      computed:{
+        user(){
+          return this.$store.state.currentUser
+        },
+        chartData(){
+          return {
+            labels: ["经典名著", "计算机与互联网", "娱乐休闲", "科普读物","生活图书","外语学习"],
             datasets: [{
-              label: '购买数量',
-              data: [2200, 1339, 2284, 1647, 956, 2998],
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.6)',
-                'rgba(54, 162, 235, 0.6)',
-                'rgba(255, 206, 86, 0.6)',
-                'rgba(75, 192, 192, 0.6)',
-                'rgba(153, 102, 255, 0.6)',
-                'rgba(255, 159, 64, 0.6)'
-              ],
-              borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-              ],
+              label: '购买量(单位 本)',
+              data: [],
               borderWidth: 1
             }]
-          },
-          options: {
-            title: {
-              display: true,
-              text: "购买本书",
-              fontSize: 25
-            },
-            legend: {
-              display: true,
-              position: 'right',
-              labels: {
-                fontColor: "#000"
-              }
-            },
-            layout: {
-              padding: {
-                left: 50, right: 0, bottom: 0, top: 0
-              }
-            }
           }
-        }
+        },
+      },
+      methods:{
+      },
+      created(){
+          axios.get('/user/statisticForClient?userid='+this.user.userid)
+            .then(res=>{
+              //console.log(res.data)
+              return res.data
+            })
+            .then(data=>{
+                var arr = []
+                arr.push(data.obj.classics)
+                arr.push(data.obj.it)
+                arr.push(data.obj.relaxation)
+                arr.push(data.obj.science)
+                arr.push(data.obj.life)
+                arr.push(data.obj.language)
+                //console.log(arr)
+              for(let i=0;i<6;i++){
+                this.chartData.datasets[0].data[i] = arr[i]
+              }
+              //console.log(this.chartData.datasets[0].data)
+              this.show = true
+              this.$store.commit("setBookItems",data.obj.books)
+            })
       }
     }
 </script>

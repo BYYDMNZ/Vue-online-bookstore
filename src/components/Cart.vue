@@ -9,13 +9,13 @@
         <span style="color:crimson;font-size:12px">注：离开页面前先保存防止数据丢失哦</span>
         <ul>
           <li v-for="book in baskets">
-            <img :src="book.imageurl" class="imgClass">
+            <img :src="book.imageUrl" class="imgClass">
             <div class="message">
               <p style="font-size: 16px;font-weight: bold;">{{book.title}}</p>
               <p><span style="font-size: 14px;color:#222;margin-left: 5px">{{book.author}}</span></p>
               <p style="font-size: 15px;color:purple;margin-top: 5px">店铺：{{book.bookStore}}</p>
               <p style="margin-top: 20px">
-                <a href="#" style="color: darkred;font-size: 12px;text-decoration:underline" @click.prevent="deleteBook(book.bookid)">删除</a>
+                <a href="#" style="color: darkred;font-size: 12px;text-decoration:underline" @click.prevent="deleteBook(book.id)">删除</a>
                 <span>|</span>
                 <a href="#" style="color: grey;font-size: 12px" >移入收藏夹</a>
               </p>
@@ -24,9 +24,9 @@
               ￥{{book.price}}
             </div>
             <div class="number">
-              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="subNumber(book.bookid)">-</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="subNumber(book.id)">-</button>
               {{book.number}}
-              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="addNumber(book.bookid)">+</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="addNumber(book.id)">+</button>
             </div>
           </li>
         </ul>
@@ -59,7 +59,6 @@
           //数据
           makeSure:false,
           components: {Alert},
-          user:{},//当前登录用户
           // baskets:[//购物车
           //   {id:1,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"你一定找不到",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
           //   {id:2,imgUrl:"https://images-cn-4.ssl-images-amazon.com/images/I/51PpPAw86DL._SS100_.jpg",title:"书本2",bookStore:"叶倩的店",price:127,number:1,author:"洛朗·里夏尔"},
@@ -77,11 +76,14 @@
           }
           return price
         },
+        user(){
+          return this.$store.state.currentUser
+        }
       },
       methods:{
         subNumber(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id === this.baskets[i].bookid){
+            if(id === this.baskets[i].id){
               if(this.baskets[i].number>1) {
                 this.baskets[i].number--;
               }
@@ -91,7 +93,7 @@
         },
         addNumber(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id === this.baskets[i].bookid){
+            if(id === this.baskets[i].id){
               this.baskets[i].number++;
             }
           }
@@ -99,7 +101,7 @@
         },
         deleteBook(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id===this.baskets[i].bookid){
+            if(id===this.baskets[i].id){
               this.baskets.splice(i,1);
             }
           }
@@ -111,13 +113,14 @@
               userid:this.user.userid
             }
             console.log(list)
-            // axios.post('/savecart',list)
-            //   .then(res=>{
-            //     console.log(res)
-            //   })
-            //   .catch(err=>{
-            //     console.log(err)
-            //   })
+            axios.post('/cart/savecart',list)
+              .then(res=>{
+                console.log(res)
+                alert("保存成功")
+              })
+              .catch(err=>{
+                console.log(err)
+              })
         },
         confirm(){
           this.makeSure = true
@@ -132,17 +135,16 @@
               books.push({bookid:book,number:num});
            }
            var order = {
-              userid:this.$store.state.currentUser.userid,
+              userid:this.user.userid,
               books:books,
               date:new Date().getTime()
            }
            console.log(order)
-          // axios.post('/buyAll',order)
-          //   .then(()=>{
-          //     //清空购物车
-          //     this.baskets = null;
-          //   })
-          this.baskets = [];
+          axios.post('/cart/buyAll',order)
+            .then(()=>{
+              //清空购物车
+              this.baskets = [];
+            })
           this.alerted = true
         },
         closeTheBox(){
@@ -155,7 +157,7 @@
       },
       created(){
         //获取当前用户的个人信息
-        this.user = this.$store.state.currentUser
+        //this.user = this.$store.state.currentUser
         //console.log(this.user)
         //获取购物车信息
         axios.get('/cart/cart?userId='+this.user.userid)
