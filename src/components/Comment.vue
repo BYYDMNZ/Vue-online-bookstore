@@ -8,7 +8,7 @@
             <img :src="book.imgUrl" />
               <span class="title">{{book.title}}</span>
               <span class="author">{{book.author}}</span>
-          
+
           </div>
           <div class="comment col-sm-12 col-md-6">
             <form @submit.prevent="onSubmit">
