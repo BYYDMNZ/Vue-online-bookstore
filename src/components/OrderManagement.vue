@@ -50,10 +50,14 @@
               orderNumber:num,
               storeId:this.user.userid
             }
-            // axios.post('/dealOrder',data)
-            //   .then(res=>{
-            //   })
-            //   .catch()
+            axios.post('/orderForm/dealOrder',data)
+              .then(res=>{
+                 for(let i=0;i<this.orders.length;i++){
+                   if(num === this.orders[i].orderNumber)
+                     this.orders[i].isDeal = 1
+                 }
+              })
+              .catch()
           }
       },
       created(){
