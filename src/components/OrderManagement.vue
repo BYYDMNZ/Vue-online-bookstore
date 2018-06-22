@@ -9,10 +9,10 @@
               <p>
                 <span class="client">购买者: {{order.client}}</span>
                 <span class="date">{{order.date}}</span>
-                <span class="isDeal">{{order.isDeal===false?'未处理':'已处理'}}</span>
+                <span class="isDeal">{{order.isDeal===0?'未处理':'已处理'}}</span>
               </p>
               <p>
-                <span class="bookMessage" v-for="book in order.books"> {{book.title}}-{{book.num}}本 </span>
+                <span class="bookMessage"> {{order.books.title}}-{{order.books.num}}本 </span>
               </p>
               <button type="btn" class="btn btn-sm btn-outline-success" @click="dealOrder(order.orderNumber)">处理订单</button>
             </div>

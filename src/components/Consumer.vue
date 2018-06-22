@@ -35,7 +35,7 @@
               <tr v-for="book in orders">
                 <td>{{book.title}}</td>
                 <td>￥{{book.price}}</td>
-                <td>{{book.number}}本</td>
+                <td>{{book.number}}</td>
                 <td>{{book.bookStore}}</td>
                 <td>￥{{book.price * book.number}}</td>
                 <td><router-link :to="'/comment/'+book.id"><button class="btn btn-sm btn-danger" >评价</button></router-link></td>

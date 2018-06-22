@@ -170,7 +170,7 @@
           //获取店铺的所有图书信息
           axios.get('/book/allOfBookstore?userid='+this.currentUser.userid)
             .then(res=>{
-             // console.log(res.data)
+             console.log(res.data)
               return res.data
             })
             .then(data=>{
