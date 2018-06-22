@@ -15,7 +15,7 @@
               <p><span style="font-size: 14px;color:#222;margin-left: 5px">{{book.author}}</span></p>
               <p style="font-size: 15px;color:purple;margin-top: 5px">店铺：{{book.bookStore}}</p>
               <p style="margin-top: 20px">
-                <a href="#" style="color: darkred;font-size: 12px;text-decoration:underline" @click.prevent="deleteBook(book.id)">删除</a>
+                <a href="#" style="color: darkred;font-size: 12px;text-decoration:underline" @click.prevent="deleteBook(book.cartid)">删除</a>
                 <span>|</span>
                 <a href="#" style="color: grey;font-size: 12px" >移入收藏夹</a>
               </p>
@@ -24,9 +24,9 @@
               ￥{{book.price}}
             </div>
             <div class="number">
-              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="subNumber(book.id)">-</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="subNumber(book.cartid)">-</button>
               {{book.number}}
-              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="addNumber(book.id)">+</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" style="border-radius: 50%" @click="addNumber(book.cartid)">+</button>
             </div>
           </li>
         </ul>
@@ -83,7 +83,7 @@
       methods:{
         subNumber(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id === this.baskets[i].id){
+            if(id === this.baskets[i].cartid){
               if(this.baskets[i].number>1) {
                 this.baskets[i].number--;
               }
@@ -93,23 +93,32 @@
         },
         addNumber(id){
           for(let i=0;i<this.baskets.length;i++){
-            if(id === this.baskets[i].id){
+            if(id === this.baskets[i].cartid){
               this.baskets[i].number++;
             }
           }
          // this.saveBaskets()
         },
         deleteBook(id){
-          for(let i=0;i<this.baskets.length;i++){
-            if(id===this.baskets[i].id){
-              this.baskets.splice(i,1);
-            }
-          }
+          axios.get('/cart/deleteCart?cartid='+id)
+            .then(res=>{
+              for(let i=0;i<this.baskets.length;i++){
+                if(id===this.baskets[i].cartid){
+                  this.baskets.splice(i,1);
+                }
+              }
+            })
+
          // this.saveBaskets()
         },
         saveBaskets(){
+            var arr =[]
+            for(let i=0;i<this.baskets.length;i++){
+              arr.push({cartid:this.baskets[i].cartid,number:this.baskets[i].number})
+            }
+            //console.log(arr)
             var list={
-              baskets:this.baskets,
+              baskets:arr,
               userid:this.user.userid
             }
             console.log(list)
@@ -128,19 +137,7 @@
         pay(){
           document.documentElement.scrollTop = 0
           //生成购物车订单
-           var books = []
-           for(let i=0;i<this.baskets.length;i++){
-              var book = this.baskets[i].bookid
-              var num = this.baskets[i].number
-              books.push({bookid:book,number:num});
-           }
-           var order = {
-              userid:this.user.userid,
-              books:books,
-              date:new Date().getTime()
-           }
-           console.log(order)
-          axios.post('/cart/buyAll',order)
+          axios.get('/cart/buyAll?userid='+this.user.userid)
             .then(()=>{
               //清空购物车
               this.baskets = [];

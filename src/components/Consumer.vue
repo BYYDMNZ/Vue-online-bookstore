@@ -97,13 +97,13 @@
       created(){
           this.submitted = false;
           //获取已购商品订单信息
-          axios.get('/orderForm/bought/?userid='+this.user.userid)
+          axios.get('/orderForm/bought?userid='+this.user.userid)
             .then(res=>{
               console.log(res)
               return res.data
             })
             .then(data=>{
-              this.orders = data.orders
+              this.orders = data.obj.orders
             })
       }
     }

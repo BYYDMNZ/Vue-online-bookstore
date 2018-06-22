@@ -98,6 +98,7 @@
         closeAlert(){
           this.alerted = false
           this.makeSure = false
+          this.$router.push({name:"home"})
         }
       },
       created(){

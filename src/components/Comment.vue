@@ -6,9 +6,9 @@
         <div class="box row">
           <div class="book col-sm-12 col-md-6">
             <img :src="book.imgUrl" />
-            <span class="title">{{book.title}}</span>
-            <span class="author">{{book.author}}</span>
-            <span class="date">{{book.date}}   下单</span>
+              <span class="title">{{book.title}}</span>
+              <span class="author">{{book.author}}</span>
+              <span class="date">下单日期：{{book.date}}</span>
           </div>
           <div class="comment col-sm-12 col-md-6">
             <form @submit.prevent="onSubmit">
@@ -20,7 +20,7 @@
                 <option value="2">2</option>
                 <option value="1">1</option>
               </select>
-              <textarea class="form-control" rows="8" placeholder="请输入你的评价" v-model="brief"></textarea>
+              <textarea class="form-control" rows="8" placeholder="请输入你的评价" v-model="comment"></textarea>
               <button class="btn btn-sm btn-success button" type="submit">提交</button>
             </form>
           </div>
@@ -44,7 +44,7 @@
             bookId:this.$route.params.id,
             currentUser:this.$store.state.currentUser,
             start:5,
-            brief:null,
+            comment:"",
             // book:{
             //   imgUrl: "https://images-cn.ssl-images-amazon.com/images/I/51z40QXC7SL._SX258_BO1,204,203,200_.jpg",
             //   title: "肚子里有个火车站",
@@ -62,22 +62,35 @@
             bookid:this.bookId,
             date:new Date().getTime(),
             start:this.start,
-            comment:this.brief
+            comment:this.comment
           }
           console.log(data)
-          // axios.post('/commet/update',data)
-          //   .then()
-          //   .catch()
-          this.alerted = true
+          axios.post('/commet/insert',data)
+            .then(res=>{
+              this.alerted = true
+            })
+            .catch()
+
         },
         closeAlert(){
           this.alerted = false
         }
       },
       created(){
-          axios.get('/comet/insert?userid='+this.currentUser.userid+'&bookid='+this.bookId)
+          axios.get('/commet/insert?userid='+this.currentUser.userid+'&bookid='+this.bookId)
             .then((res)=>{
               console.log(res.data)
+              return res.data
+            })
+            .then(data=>{
+              this.book = data.obj
+              if(data.obj.commentid!==null){
+                this.commentid = data.obj.commentid
+                this.comment = data.obj.comment
+                this.start = data.obj.start
+              }else{
+                this.commentid = 0
+              }
             })
         // console.log(this.currentUser.userid+" "+this.bookId)
 
@@ -96,19 +109,18 @@
   font-size: 20px;
   font-weight: bold;
   position: absolute;
-  left: 50%;
-  top: 40px;
+  left: 20%;
 }
   .author{
     position: absolute;
-    left: 50%;
-    top: 100px;
+    left: 20%;
+    top: 40px;
     color:darkblue;
   }
   .date{
     position: absolute;
-    left: 50%;
-    top: 280px;
+    left: 22%;
+    top:80px;
     font-size: 12px;
   }
   .score{
