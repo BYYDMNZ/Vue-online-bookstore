@@ -14,7 +14,10 @@
               <p>
                 <span class="bookMessage"> {{order.books.title}}-{{order.books.num}}本 </span>
               </p>
-              <button type="btn" class="btn btn-sm btn-outline-success" @click="dealOrder(order.orderNumber)">处理订单</button>
+              <div v-show="order.url" class="kuaididan">
+                <p>快递单 : {{order.url}}</p>
+              </div>
+              <button v-show="order.isDeal===0" type="btn" class="btn btn-sm btn-outline-success" @click="dealOrder(order.orderNumber)">处理订单</button>
             </div>
          </li>
        </ul>
@@ -40,25 +43,24 @@
             //   {orderNumber:"BH-0001",client:"颖苗",date:"2018-06-11",isDeal:false,books:[{title:"书本4",num:2},{title:"书本2",num:1}]},
             //   {orderNumber:"BH-0001",client:"美男子",date:"2018-06-01",isDeal:false,books:[{title:"书本1",num:2}]},
             // ]
-            orders:[]
+            orders:[],
           }
         },
       methods:{
           dealOrder(num){
             //console.log(num);
-            var data = {
-              orderNumber:num,
-              storeId:this.user.userid
-            }
-            axios.post('/orderForm/dealOrder',data)
+            axios.get('/orderForm/dealOrder?orderNumber='+ num)
               .then(res=>{
                  for(let i=0;i<this.orders.length;i++){
-                   if(num === this.orders[i].orderNumber)
-                     this.orders[i].isDeal = 1
+                   if(num === this.orders[i].orderNumber) {
+                       this.orders[i].isDeal = 1
+                       this.orders[i].url = res.data.obj
+                   }
                  }
+                console.log(res)
               })
               .catch()
-          }
+          },
       },
       created(){
         //获取该店铺的顾客订单信息
@@ -123,6 +125,11 @@
   }
   .isDeal{
     font-size: 13px;
+    margin-left: 20%;
+  }
+  .kuaididan{
+    font-size: 12px;
+    color:#666;
     margin-left: 20%;
   }
   button{
